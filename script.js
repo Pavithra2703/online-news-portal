@@ -1,93 +1,98 @@
-const apiKey = 'e53f16a37567447ebce3a81dd78b1840';
-const container = document.getElementById('news-container');
-const loadMoreBtn = document.getElementById('load-more');
-let currentPage = 1, currentCategory = '', currentQuery = '', currentTime = '';
+const apiKey = '65ca6160d151138cde66afbce02fa6a9';
+let currentPage = 1;
+let currentCategory = '';
+let searchTerm = '';
+let timeFilter = '';
 
-function getFromTimeRange(range) {
+const container = document.getElementById('news-container');
+const loadMoreBtn = document.getElementById('loadMoreBtn');
+const searchInput = document.getElementById('searchInput');
+const timeFilterSelect = document.getElementById('timeFilter');
+
+function getFromDate(range) {
   const now = new Date();
   if (range === '1h') now.setHours(now.getHours() - 1);
   else if (range === '24h') now.setDate(now.getDate() - 1);
   else if (range === '7d') now.setDate(now.getDate() - 7);
-  return now.toISOString();
+  return now.toISOString().split('T')[0];
 }
 
-async function fetchNews(page = 1) {
-  let url;
+function buildUrl() {
+  const isSearch = !searchTerm;
+  const base = isSearch ? 'top-headlines' : 'search';
+  const params = new URLSearchParams({
+    apikey: apiKey,
+    lang: 'en',
+    country: 'us',
+    page: currentPage.toString(),
+    max: '12'
+  });
 
-  // Use top-headlines for category filtering
-  if (currentCategory) {
-    url = `https://newsapi.org/v2/top-headlines?country=us&category=${currentCategory}&pageSize=6&page=${page}&apiKey=${apiKey}`;
-    if (currentTime) url += `&from=${getFromTimeRange(currentTime)}`;
-    if (currentQuery) url += `&q=${encodeURIComponent(currentQuery)}`;
-  } else {
-    // Use everything for search or date filtering
-    url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(currentQuery || 'news')}&from=${currentTime ? getFromTimeRange(currentTime) : ''}&pageSize=6&page=${page}&apiKey=${apiKey}`;
+  if (currentCategory) params.append(isSearch ? 'category' : 'topic', currentCategory);
+  if (!isSearch && searchTerm) params.append('q', searchTerm);
+  if (!isSearch && timeFilter) params.append('from', getFromDate(timeFilter));
+
+  return `https://gnews.io/api/v4/${base}?${params.toString()}`;
+}
+
+async function fetchNews(reset = false) {
+  if (reset) {
+    currentPage = 1;
+    container.innerHTML = '';
   }
 
-  try {
-    console.log('Fetching:', url);
-    const res = await fetch(url);
-    const data = await res.json();
+  const url = buildUrl();
+  console.log('Fetching:', url);
+  const res = await fetch(url);
+  const data = await res.json();
 
-    if (data.status !== 'ok') throw new Error(data.message || 'API error');
-
-    if (!data.articles.length && page === 1) {
-      container.innerHTML = '<p>No articles found.</p>';
-      loadMoreBtn.style.display = 'none';
-      return;
-    }
-
-    displayNews(data.articles);
+  if (data.articles && data.articles.length) {
+    renderArticles(data.articles);
     loadMoreBtn.style.display = 'block';
-  } catch (err) {
-    console.error('Error fetching news:', err);
-    container.innerHTML = `<p>Something went wrong: ${err.message}</p>`;
+  } else {
+    if (currentPage === 1) container.innerHTML = '<p>No articles found.</p>';
     loadMoreBtn.style.display = 'none';
   }
 }
 
-function displayNews(articles) {
-  articles.forEach(article => {
+function renderArticles(articles) {
+  articles.forEach(a => {
     const div = document.createElement('div');
     div.className = 'article';
     div.innerHTML = `
-      <img src="${article.urlToImage || ''}" alt="news">
-      <div class="content">
-        <h2>${article.title}</h2>
-        <p>${article.description || ''}</p>
-      </div>`;
+      <img src="${a.image || 'https://via.placeholder.com/400x200'}" alt="">
+      <h2>${a.title}</h2>
+      <p>${a.description || 'No description available.'}</p>
+      <p><strong>${a.source.name}</strong> • ${new Date(a.publishedAt).toLocaleString()}</p>
+    `;
     container.appendChild(div);
   });
 }
 
-// Event handlers
-document.querySelectorAll('.category').forEach(btn => {
-  btn.addEventListener('click', e => {
+document.querySelectorAll('.category').forEach(link => {
+  link.addEventListener('click', e => {
     e.preventDefault();
-    document.querySelectorAll('.category').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentCategory = btn.dataset.category;
-    resetAndFetch();
+    document.querySelectorAll('.category').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    currentCategory = link.dataset.category;
+    fetchNews(true);
   });
 });
 
-document.getElementById('search').addEventListener('input', e => {
-  currentQuery = e.target.value.trim();
-  resetAndFetch();
+searchInput.addEventListener('input', () => {
+  searchTerm = searchInput.value.trim();
+  fetchNews(true);
 });
 
-document.getElementById('time-filter').addEventListener('change', e => {
-  currentTime = e.target.value;
-  resetAndFetch();
+timeFilterSelect.addEventListener('change', () => {
+  timeFilter = timeFilterSelect.value;
+  fetchNews(true);
 });
 
-loadMoreBtn.addEventListener('click', () => fetchNews(currentPage++));
-
-function resetAndFetch() {
-  currentPage = 1;
-  container.innerHTML = '';
-  fetchNews(currentPage);
-}
+loadMoreBtn.addEventListener('click', () => {
+  currentPage++;
+  fetchNews();
+});
 
 // Initial load
 fetchNews();
