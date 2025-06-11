@@ -8,13 +8,13 @@ body {
 
 header {
   background-color: #333;
-  color: #fff;
+  color: white;
   padding: 1rem;
   text-align: center;
 }
 
 nav a {
-  color: #fff;
+  color: white;
   margin: 0 10px;
   text-decoration: none;
 }
@@ -29,72 +29,73 @@ nav a.active {
 }
 
 .filters {
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
-.filters input,
-.filters select {
-  margin: 10px 5px;
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-  width: 200px;
+.filters select,
+.filters input {
+  margin: 5px;
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 main {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+  gap: 18px;
   padding: 20px;
-  justify-content: center;
 }
 
 .article {
-  background: #fff;
+  background: white;
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  gap: 10px;
   padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: justify;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  align-items: flex-start;
 }
 
 .article img {
-  width: 120px;
-  height: 90px;
+  width: 100%;
+  max-height: 150px;
   object-fit: cover;
-  border-radius: 5px;
-  flex-shrink: 0;
+  border-radius: 4px;
 }
 
 .article h2 {
-  font-size: 1.2rem;
-  margin: 0 0 10px;
+  margin: 0;
+  font-size: 1.1rem;
 }
 
-.article .content {
-  flex: 1;
+.article p {
+  font-size: 0.95rem;
+  text-align: justify;
+  color: #444;
 }
 
-#load-more {
-  margin: 20px auto;
+#loadMoreBtn {
   display: block;
+  margin: 20px auto;
   padding: 10px 20px;
   font-size: 1rem;
-  background-color: #333;
-  color: #fff;
   border: none;
-  border-radius: 6px;
+  background-color: #333;
+  color: white;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-#load-more:hover {
-  background-color: #ff8c00;
+#loadMoreBtn:hover {
+  background-color: #444;
 }
 
 footer {
   background-color: #333;
-  color: #fff;
+  color: white;
   text-align: center;
   padding: 1rem;
   margin-top: 20px;
