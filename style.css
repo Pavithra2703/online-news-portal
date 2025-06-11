@@ -1,0 +1,101 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav a {
+  color: #fff;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #ff8c00;
+}
+
+nav a.active {
+  color: orange;
+  font-weight: bold;
+}
+
+.filters {
+  margin-top: 10px;
+}
+
+.filters input,
+.filters select {
+  margin: 10px 5px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  width: 200px;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.article {
+  background: #fff;
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: justify;
+}
+
+.article img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.article h2 {
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+}
+
+.article .content {
+  flex: 1;
+}
+
+#load-more {
+  margin: 20px auto;
+  display: block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#load-more:hover {
+  background-color: #ff8c00;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 20px;
+}

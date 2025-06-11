@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online News Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#" class="category active" data-category="">Home</a>
+      <a href="#" class="category" data-category="business">Business</a>
+      <a href="#" class="category" data-category="technology">Technology</a>
+      <a href="#" class="category" data-category="sports">Sports</a>
+      <a href="#" class="category" data-category="general">Current Affairs</a>
+    </nav>
+
+    <div class="filters">
+      <input type="text" id="search" placeholder="Search news...">
+      <select id="time-filter">
+        <option value="">All Time</option>
+        <option value="1h">Last Hour</option>
+        <option value="24h">Last Day</option>
+        <option value="7d">Last Week</option>
+      </select>
+    </div>
+  </header>
+
+  <main id="news-container"></main>
+  <button id="load-more">Load More</button>
+
+  <footer>
+    <p>&copy; 2025 Online News Portal</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
