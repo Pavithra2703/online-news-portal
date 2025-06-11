@@ -60,14 +60,17 @@ function renderArticles(articles) {
     const div = document.createElement('div');
     div.className = 'article';
     div.innerHTML = `
-      <img src="${a.image || 'https://via.placeholder.com/400x200'}" alt="">
-      <h2>${a.title}</h2>
-      <p>${a.description || 'No description available.'}</p>
-      <p><strong>${a.source.name}</strong> • ${new Date(a.publishedAt).toLocaleString()}</p>
+      <a href="${a.url}" target="_blank" style="text-decoration: none; color: inherit;">
+        <img src="${a.image || 'https://via.placeholder.com/400x200'}" alt="">
+        <h2>${a.title}</h2>
+        <p>${a.description || 'No description available.'}</p>
+        <p><strong>${a.source.name}</strong> • ${new Date(a.publishedAt).toLocaleString()}</p>
+      </a>
     `;
     container.appendChild(div);
   });
 }
+
 
 document.querySelectorAll('.category').forEach(link => {
   link.addEventListener('click', e => {
